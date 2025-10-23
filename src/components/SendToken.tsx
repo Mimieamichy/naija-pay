@@ -1,25 +1,22 @@
 import { useState } from 'react';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Send, Loader2 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Card } from '@/components/ui/card';
+import { Send } from 'lucide-react';
 import { toast } from 'sonner';
 
 export const SendToken = () => {
+  const { publicKey, sendTransaction, connected } = useWallet();
   const { connection } = useConnection();
-  const { publicKey, sendTransaction } = useWallet();
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSend = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!publicKey) {
-      toast.error('Please connect your wallet');
+  const handleSend = async () => {
+    if (!connected || !publicKey) {
+      toast.error('Wallet not connected');
       return;
     }
 
@@ -47,71 +44,45 @@ export const SendToken = () => {
         description: `Signature: ${signature.slice(0, 8)}...`,
       });
 
-      await connection.confirmTransaction(signature, 'confirmed');
-      
-      toast.success('Transaction confirmed!');
       setRecipient('');
       setAmount('');
-    } catch (error: any) {
-      console.error('Transfer error:', error);
-      toast.error('Transfer failed', {
-        description: error.message || 'Please try again',
-      });
+    } catch (error) {
+      console.error('Transaction failed:', error);
+      toast.error('Transaction failed');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Card className="p-6 bg-gradient-to-br from-card to-secondary border-primary/20">
-      <div className="flex items-center gap-2 mb-6">
-        <Send className="w-5 h-5 text-primary" />
-        <h2 className="text-xl font-bold">Send SOL</h2>
-      </div>
+    <Card className="p-6 bg-gradient-to-br from-card to-secondary border-border">
+      <div className="space-y-4">
+        <Input
+          placeholder="Recipient address"
+          value={recipient}
+          onChange={(e) => setRecipient(e.target.value)}
+          className="bg-background border-border"
+        />
 
-      <form onSubmit={handleSend} className="space-y-4">
-        <div>
-          <Label htmlFor="recipient">Recipient Address</Label>
-          <Input
-            id="recipient"
-            placeholder="Enter Solana address..."
-            value={recipient}
-            onChange={(e) => setRecipient(e.target.value)}
-            className="font-mono text-sm mt-1"
-          />
-        </div>
+        <Input
+          type="number"
+          placeholder="Amount (USDC)"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          className="bg-background border-border"
+        />
 
-        <div>
-          <Label htmlFor="amount">Amount (SOL)</Label>
-          <Input
-            id="amount"
-            type="number"
-            step="0.0001"
-            placeholder="0.00"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className="mt-1"
-          />
-        </div>
-
-        <Button
-          type="submit"
-          disabled={loading || !publicKey}
-          className="w-full bg-primary hover:bg-primary/90"
+        <Button 
+          onClick={handleSend} 
+          disabled={loading}
+          variant="accent"
+          className="w-full h-14"
+          size="lg"
         >
-          {loading ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Sending...
-            </>
-          ) : (
-            <>
-              <Send className="w-4 h-4 mr-2" />
-              Send SOL
-            </>
-          )}
+          <Send className="w-5 h-5 mr-2" />
+          {loading ? 'Sending...' : 'Send USDC'}
         </Button>
-      </form>
+      </div>
     </Card>
   );
 };

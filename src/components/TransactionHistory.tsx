@@ -1,98 +1,77 @@
 import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { History, ExternalLink } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft } from 'lucide-react';
 
-interface Transaction {
-  id: string;
-  type: 'send' | 'receive' | 'deposit' | 'withdraw';
-  amount: string;
-  status: 'confirmed' | 'pending' | 'failed';
-  signature?: string;
-  timestamp: Date;
-}
-
-// Mock transaction data
-const mockTransactions: Transaction[] = [
+const mockTransactions = [
   {
-    id: '1',
-    type: 'deposit',
-    amount: '₦50,000',
-    status: 'confirmed',
-    timestamp: new Date(Date.now() - 3600000),
+    id: 1,
+    type: 'sent',
+    address: '0x...cDEf',
+    amount: 50,
+    status: 'completed',
+    date: 'Oct 26, 2023',
   },
   {
-    id: '2',
-    type: 'send',
-    amount: '0.5 SOL',
-    status: 'confirmed',
-    signature: '5a8b9c...',
-    timestamp: new Date(Date.now() - 7200000),
+    id: 2,
+    type: 'received',
+    address: '0x...gHlj',
+    amount: 200,
+    status: 'completed',
+    date: 'Oct 25, 2023',
+  },
+  {
+    id: 3,
+    type: 'sent',
+    address: '0x...kLMn',
+    amount: 15.75,
+    status: 'pending',
+    date: 'Oct 24, 2023',
   },
 ];
 
 export const TransactionHistory = () => {
-  const getTypeColor = (type: Transaction['type']) => {
-    switch (type) {
-      case 'send': return 'destructive';
-      case 'receive': return 'default';
-      case 'deposit': return 'secondary';
-      case 'withdraw': return 'outline';
-    }
-  };
-
-  const getStatusColor = (status: Transaction['status']) => {
-    switch (status) {
-      case 'confirmed': return 'bg-accent/20 text-accent';
-      case 'pending': return 'bg-yellow-500/20 text-yellow-500';
-      case 'failed': return 'bg-destructive/20 text-destructive';
-    }
-  };
-
   return (
-    <Card className="p-6 bg-gradient-to-br from-card to-secondary border-primary/20">
-      <div className="flex items-center gap-2 mb-4">
-        <History className="w-5 h-5 text-primary" />
-        <h2 className="text-xl font-bold">Transaction History</h2>
-      </div>
-
-      <div className="space-y-3">
-        {mockTransactions.length === 0 ? (
-          <p className="text-center text-muted-foreground py-8">
-            No transactions yet
-          </p>
-        ) : (
-          mockTransactions.map((tx) => (
-            <div
-              key={tx.id}
-              className="flex items-center justify-between p-3 bg-background/50 rounded-lg border border-border"
-            >
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <Badge variant={getTypeColor(tx.type)} className="capitalize">
-                    {tx.type}
-                  </Badge>
-                  <span className={`text-xs px-2 py-0.5 rounded ${getStatusColor(tx.status)}`}>
-                    {tx.status}
-                  </span>
-                </div>
-                <p className="font-semibold">{tx.amount}</p>
-                <p className="text-xs text-muted-foreground">
-                  {tx.timestamp.toLocaleString()}
-                </p>
+    <Card className="p-6 bg-gradient-to-br from-card to-secondary border-border">
+      <h2 className="text-xl font-bold mb-6">Recent Activity</h2>
+      
+      <div className="space-y-4">
+        {mockTransactions.map((tx) => (
+          <div
+            key={tx.id}
+            className="flex items-center justify-between p-4 bg-background/50 rounded-lg hover:bg-background/70 transition-colors"
+          >
+            <div className="flex items-center gap-4">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                tx.type === 'sent' 
+                  ? 'bg-red-500/20' 
+                  : 'bg-accent/20'
+              }`}>
+                {tx.type === 'sent' ? (
+                  <ArrowUpRight className="w-5 h-5 text-red-400" />
+                ) : (
+                  <ArrowDownLeft className="w-5 h-5 text-accent" />
+                )}
               </div>
-              {tx.signature && (
-                <a
-                  href={`https://explorer.solana.com/tx/${tx.signature}?cluster=devnet`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:text-primary/80"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-              )}
+              
+              <div>
+                <p className="font-medium">
+                  {tx.type === 'sent' ? 'Sent to' : 'Received from'} {tx.address}
+                </p>
+                <p className="text-sm text-muted-foreground">{tx.date}</p>
+              </div>
             </div>
-          ))
-        )}
+
+            <div className="text-right">
+              <p className="font-bold text-lg">
+                {tx.type === 'sent' ? '-' : '+'} ${tx.amount.toFixed(2)} USDC
+              </p>
+              <p className={`text-sm ${
+                tx.status === 'pending' ? 'text-yellow-400' : 'text-accent'
+              }`}>
+                {tx.status === 'pending' ? 'Pending' : 'Completed'}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </Card>
   );
