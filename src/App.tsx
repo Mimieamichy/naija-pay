@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Transactions from "./pages/Transactions";
 import Profile from "./pages/Profile";
 import SendUSDCPage from "./pages/SendUSDC";
+import FiatPage from "./pages/Fiat";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/send-usdc" element={<SendUSDCPage />} />
+            <Route path="/fiat" element={<FiatPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
