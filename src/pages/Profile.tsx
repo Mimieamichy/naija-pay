@@ -94,8 +94,8 @@ export default function Profile() {
                     </div>
                   </div>
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
-                    <Button variant="gradient" size="sm" className="rounded-full w-full sm:w-auto">Save Profile</Button>
-                    <Button variant="ghost" size="sm" onClick={onLogout} className="rounded-full w-full sm:w-auto">Log Out</Button>
+                    
+                  
                   </div>
                 </div>
               </CardContent>

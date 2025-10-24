@@ -10,6 +10,7 @@ import Transactions from "./pages/Transactions";
 import Profile from "./pages/Profile";
 import SendUSDCPage from "./pages/SendUSDC";
 import FiatPage from "./pages/Fiat";
+import NotificationsPage from "./pages/Notifications";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/send-usdc" element={<SendUSDCPage />} />
             <Route path="/fiat" element={<FiatPage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

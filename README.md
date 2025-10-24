@@ -1,4 +1,4 @@
-# NaijaPay -
+# NaijaPay - Naira Token Transfer MVP using Solana Devnet
 
 A web-based MVP for demonstrating on-chain token transfers on Solana Devnet, wallet connection, custodial deposit simulation, and mock naira fiat operations.
 

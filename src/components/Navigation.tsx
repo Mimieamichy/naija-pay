@@ -64,9 +64,11 @@ export const Navigation = () => {
           {/* Right Actions */}
           {connected && (
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <Bell className="w-5 h-5" />
-              </Button>
+              <Link to="/notifications" aria-label="Open notifications" className="inline-flex">
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  <Bell className="w-5 h-5" />
+                </Button>
+              </Link>
               <Button
                 variant="ghost"
                 size="icon"
