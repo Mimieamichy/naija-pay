@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { useMemo, useState } from "react";
 import { ArrowDownLeft, Plus } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
+import { toast } from "sonner";
 
 const EXCHANGE_RATE = 1450; // 1 USDC = 1450 ₦ (visual fidelity)
 
@@ -69,7 +70,16 @@ export default function FiatPage() {
                   </div>
 
                   <div className="pt-2">
-                    <Button variant="accent" size="lg" className="rounded-full">
+                    <Button
+                      variant="accent"
+                      size="lg"
+                      className="rounded-full"
+                      onClick={() =>
+                        toast.success("Deposit placed", {
+                          description: "Your mock deposit request is pending confirmation.",
+                        })
+                      }
+                    >
                       Simulate Deposit
                     </Button>
                   </div>
@@ -128,7 +138,16 @@ export default function FiatPage() {
                   </div>
 
                   <div className="pt-2">
-                    <Button variant="accent" size="lg" className="rounded-full">
+                    <Button
+                      variant="accent"
+                      size="lg"
+                      className="rounded-full"
+                      onClick={() =>
+                        toast.success("Withdraw placed", {
+                          description: "Your mock withdrawal request is pending confirmation.",
+                        })
+                      }
+                    >
                       Simulate Withdraw
                     </Button>
                   </div>
