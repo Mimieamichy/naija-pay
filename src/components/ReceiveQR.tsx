@@ -1,10 +1,26 @@
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Card } from '@/components/ui/card';
 import { QRCodeSVG } from 'qrcode.react';
-import { QrCode } from 'lucide-react';
+import { QrCode, Copy, Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 export const ReceiveQR = () => {
   const { publicKey, connected } = useWallet();
+  const [copied, setCopied] = useState(false);
+
+  const copyAddress = async () => {
+    if (!publicKey) return;
+    try {
+      await navigator.clipboard.writeText(publicKey.toBase58());
+      setCopied(true);
+      toast.success('Address copied to clipboard');
+      setTimeout(() => setCopied(false), 2000);
+    } catch (e) {
+      toast.error('Failed to copy address');
+    }
+  };
 
   if (!connected || !publicKey) {
     return (
@@ -39,6 +55,12 @@ export const ReceiveQR = () => {
         <p className="text-xs font-mono break-all bg-secondary p-2 rounded">
           {publicKey.toBase58()}
         </p>
+        <div className="mt-3">
+          <Button onClick={copyAddress} variant="outline" size="sm" className="rounded-full">
+            {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
+            {copied ? 'Copied' : 'Copy Address'}
+          </Button>
+        </div>
       </div>
     </Card>
   );

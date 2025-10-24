@@ -102,3 +102,21 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* Motion for the Connect Wallet button: bounce across screen while rotating */
+@keyframes wallet-bounce-rotate {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(calc(100vw - var(--btn-width))) rotate(180deg);
+  }
+  100% {
+    transform: translateX(0) rotate(360deg);
+  }
+}
+
+.animate-wallet-bounce-rotate {
+  animation: wallet-bounce-rotate 16s ease-in-out infinite alternate;
+  will-change: transform;
+}

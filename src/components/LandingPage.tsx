@@ -4,12 +4,14 @@ export const LandingPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="container mx-auto px-6 py-6">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-            <span className="text-white font-bold text-xl">N</span>
+      <header className="border-b border-border bg-background/80">
+        <div className="container mx-auto px-6 py-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+              <span className="text-white font-bold text-xl">N</span>
+            </div>
+            <span className="text-xl font-bold">NaijaPay</span>
           </div>
-          <span className="text-xl font-bold">NaijaPay</span>
         </div>
       </header>
 
@@ -26,10 +28,21 @@ export const LandingPage = () => {
             Connect your wallet to get started.
           </p>
 
-          <div className="flex justify-center">
-            <WalletMultiButton 
-              className="!bg-gradient-to-r !from-primary !to-accent !text-white !h-14 !px-8 !rounded-lg !text-base !font-medium hover:!opacity-90 !transition-all hover:!scale-105 active:!scale-95 !shadow-lg"
-            />
+          {/* Animated button across the screen */}
+          <div className="relative w-screen max-w-[100vw] h-12 overflow-visible">
+            <div 
+              className="animate-wallet-bounce-rotate absolute left-0"
+              style={{ width: 'var(--btn-width)', ['--btn-width' as any]: '220px' }}
+            >
+              <WalletMultiButton 
+                className="!text-white !h-12 !px-8 !text-base !font-medium hover:!opacity-95 !transition-opacity"
+                style={{ 
+                  backgroundImage: 'linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)))',
+                  boxShadow: 'var(--shadow-glow)',
+                  borderRadius: '9999px',
+                }}
+              />
+            </div>
           </div>
         </div>
       </main>

@@ -6,6 +6,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { WalletContextProvider } from "@/contexts/WalletContextProvider";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Transactions from "./pages/Transactions";
+import Profile from "./pages/Profile";
+import SendUSDCPage from "./pages/SendUSDC";
 
 const queryClient = new QueryClient();
 
@@ -14,10 +17,13 @@ const App = () => (
     <WalletContextProvider>
       <TooltipProvider>
         <Toaster />
-        <Sonner />
+        <Sonner position="top-right" richColors />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/send-usdc" element={<SendUSDCPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

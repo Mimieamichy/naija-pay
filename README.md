@@ -1,4 +1,4 @@
-# SolPay - Solana Token Transfer MVP
+# NaijaPay -
 
 A web-based MVP for demonstrating on-chain token transfers on Solana Devnet, wallet connection, custodial deposit simulation, and mock naira fiat operations.
 

@@ -3,10 +3,26 @@ import { Bell, Power, User } from 'lucide-react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuLabel } from '@/components/ui/dropdown-menu';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useState } from 'react';
 
 export const Navigation = () => {
   const location = useLocation();
   const { disconnect, connected } = useWallet();
+  const isMobile = useIsMobile();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
 
   const navItems = [
     { name: 'Dashboard', path: '/' },
@@ -26,7 +42,7 @@ export const Navigation = () => {
             <span className="text-xl font-bold">NaijaPay</span>
           </Link>
 
-          {/* Nav Links */}
+          {/* Nav Links (desktop only) */}
           {connected && (
             <div className="hidden md:flex items-center gap-8">
               {navItems.map((item) => (
@@ -55,19 +71,67 @@ export const Navigation = () => {
                 variant="ghost"
                 size="icon"
                 className="rounded-full"
-                onClick={() => disconnect()}
+                onClick={() => setShowLogoutConfirm(true)}
               >
                 <Power className="w-5 h-5" />
               </Button>
-              <Avatar>
-                <AvatarFallback className="bg-gradient-to-br from-primary to-accent">
-                  <User className="w-5 h-5 text-white" />
-                </AvatarFallback>
-              </Avatar>
+
+              {isMobile ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Avatar className="cursor-pointer" aria-label="Open navigation menu">
+                      <AvatarFallback className="bg-gradient-to-br from-primary to-accent">
+                        <User className="w-5 h-5 text-white" />
+                      </AvatarFallback>
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuLabel>Menu</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    {navItems.map((item) => (
+                      <DropdownMenuItem key={item.path} asChild>
+                        <Link to={item.path} className="flex w-full items-center">
+                          {item.name}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Avatar className="cursor-pointer">
+                  <AvatarFallback className="bg-gradient-to-br from-primary to-accent">
+                    <User className="w-5 h-5 text-white" />
+                  </AvatarFallback>
+                </Avatar>
+              )}
             </div>
           )}
         </div>
       </div>
+
+      {/* Logout Confirmation Dialog */}
+      <AlertDialog open={showLogoutConfirm} onOpenChange={setShowLogoutConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirm Logout</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to logout? You'll need to reconnect your wallet to continue using NaijaPay.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                disconnect();
+                setShowLogoutConfirm(false);
+              }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Logout
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </nav>
   );
 };
